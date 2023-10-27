@@ -1,12 +1,17 @@
 function [bestChromosome, bestFitness,generation] = standardga(sga)
 % Инициализация начальной популяции
 population = InitPopulation(sga.cht, sga.qpop, sga.length, sga.funrand);
-
+% проверка ограничений
 % Начальное поколение
 generation = 1;
 
 
 while true
+    
+    for i=1:length(population)
+    assert(sga.funrand(2,population{i}) == 1)
+    assert(sga.funrand(3,population{i}) == 1)
+    end
     % Вычисление начальной оценки функции оптимальности
     for i=1:length(population)
         fitness(i) = sga.fitfun(population{i});
@@ -55,12 +60,12 @@ for N=1:sga.numRecon
                 otherwise
                     error('Неверный тип хромосомы. Допустимые значения: ''Chromobin'', ''Chromoint'', ''Chromolist''.');
             end
-        else recpop{N} = [];
         end
-    end
     recpop{2*N-1} = rec{1};
     recpop{2*N}   = rec{2};
+    else recpop{N} = []; end
 end
+
 for N=1:sga.numMut
     if(sga.pmut)
         Pm = 1:1:round(sga.pmut*1000);
@@ -70,7 +75,7 @@ for N=1:sga.numMut
                 case 'Chromobin'
                     mpop{N} = mutationbin(population{randi(sga.qpop,1)}); % Генерация случайной бинарной хромосомы.
                 case 'Chromoint'
-                    mpop{N} = mutationint(population{randi(sga.qpop,1)}, randi(sga.limit,1)); %Создаём хромосому в форме последовательности целых чисел
+                    mpop{N} = mutationint(population{randi(sga.qpop,1)}, sga.limit); %Создаём хромосому в форме последовательности целых чисел
                 case 'Chromolist'
                     mpop{N} = mutationlist(population{randi(sga.qpop,1)},randi(sga.limit,1)); %Создаём хромосому в форме последовательности целых чисел
                 otherwise
@@ -79,10 +84,21 @@ for N=1:sga.numMut
         end
     end
 end
-    if(sga.MutOnOff == 0)
+
+    
+    if(sga.MutOnOff == 0 & sga.precom > 0)
         allpopulation = [population' recpop]';
-    else
+    elseif(sga.precom == 0 & sga.MutOnOff > 0)
+        allpopulation = [population' mpop]';
+    elseif(sga.precom > 0 & sga.MutOnOff > 0)
         allpopulation = [population' recpop mpop]';
+    else
+        allpopulation = population;
+    end
+    
+    for i=1:length(allpopulation)
+    deb1(i) = (sga.funrand(2,allpopulation{i}) == 1);
+    deb2(i) = (sga.funrand(3,allpopulation{i}) == 1);
     end
     % Формирование нового поколения
     % Вычисление оценки функции оптимальности для новой популяции
@@ -91,8 +107,7 @@ end
     % Замена текущей популяции новой
     population = newPopulation;
     
-    generation = generation + 1;
-    generation;   
+    generation = generation + 1;   
 end
 
 

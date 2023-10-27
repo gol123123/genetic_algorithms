@@ -20,12 +20,10 @@ switch cht
     case 'Chromobin'
         chromosome = cromobin(length,0); % Генерация случайной бинарной хромосомы.
     case 'Chromoint'
-        for j=1:length
-        chromosome(j) = rand(1); %Создаём хромосому в форме последовательности целых чисел
-        end
+        chromosome = rand(1); %Создаём хромосому в форме последовательности целых чисел
     case 'Chromolist'
         for j=1:length
-        chromosome{j} = [j, rand(1)]; %Создаём хромосому в форме последовательности целых чисел
+        chromosome{j} = [j, rand(j)]; %Создаём хромосому в форме последовательности целых чисел
         end                        % Генерация случайной хромосомы в виде списка пар (номер гена, целое значение).
     otherwise
         error('Неверный тип хромосомы. Допустимые значения: ''Chromobin'', ''Chromoint'', ''Chromolist''.');
