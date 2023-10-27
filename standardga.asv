@@ -58,27 +58,25 @@ for N=1:sga.numRecon
         else recpop{N} = [];
         end
     end
-    recpop{2*N-1} = rec{1};
-    recpop{2*N}   = rec{2};
+    for i=1:2
+    recpop{2*N-1} = [rec{1} rec{2}]';
 end
-for N=1:sga.numMut
     if(sga.pmut)
         Pm = 1:1:round(sga.pmut*1000);
         res_mut = randi(1000, 1); % согласен с zosima про 6 и 7
         if(1<=res_mut <= round(sga.pmut*1000))
             switch sga.cht
                 case 'Chromobin'
-                    mpop{N} = mutationbin(population{randi(sga.qpop,1)}); % Генерация случайной бинарной хромосомы.
+                    mpop{1} = mutationbin(population{randi(sga.qpop,1)}); % Генерация случайной бинарной хромосомы.
                 case 'Chromoint'
-                    mpop{N} = mutationint(population{randi(sga.qpop,1)}, randi(sga.limit,1)); %Создаём хромосому в форме последовательности целых чисел
+                    mpop{1} = mutationint(population{randi(sga.qpop,1)}, randi(sga.limit,1)); %Создаём хромосому в форме последовательности целых чисел
                 case 'Chromolist'
-                    mpop{N} = mutationlist(population{randi(sga.qpop,1)},randi(sga.limit,1)); %Создаём хромосому в форме последовательности целых чисел
+                    mpop{1} = mutationlist(population{randi(sga.qpop,1)},randi(sga.limit,1)); %Создаём хромосому в форме последовательности целых чисел
                 otherwise
                     error('Неверный тип хромосомы. Допустимые значения: ''Chromobin'', ''Chromoint'', ''Chromolist''.');
             end
         end
     end
-end
     if(sga.MutOnOff == 0)
         allpopulation = [population' recpop]';
     else
@@ -100,6 +98,5 @@ for i=1:(length(all_fitness))
 m(i) = min(all_fitness{i});
 end
 plot(m);
-xlabel("число поколений");
-ylabel("значение функции");
+
 end

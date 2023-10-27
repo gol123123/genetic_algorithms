@@ -29,12 +29,12 @@ function [selectedPopulation, selectedIndices] = selection(P, fitfun, typesel, f
     
     if(typesel == 'ES')
         if(funcriteria == 'max')
-            for i=1:2
+            for i=1:parents
               [f(i), selectedIndices(i)] =  max(fitness);
               fitness(selectedIndices(i)) = NaN;
             end
         else
-           for i=1:2
+           for i=1:parents
               [f(i), selectedIndices(i)] =  min(fitness);
               fitness(selectedIndices(i)) = NaN;
            end 
