@@ -14,7 +14,7 @@ sga.funrand = @limitations; %функция порождения хромосо�
 %функция оптимальности
 sga.fitfun = @(x) 600*(300*x(1)+350*x(2)+325*x(3))+300*(200*x(4)+300*x(5)+250*x(6))+650*(150*x(7)+230*x(8)+190*x(9));                            
 sga.typesel = 'ES';                           %тип селекции 
-sga.terminationcond = 2000;                   %макс число поколений
+sga.terminationcond = 1000;                   %макс число поколений
 sga.fitgoalpmut = 0.1;                        %значение ошибки
 sga.MutOnOff = 1;                             %"1" вкл "0" выкл мутаций
 sga.funcriteria = 'max';                      %ищем минимум или максимум
@@ -24,3 +24,10 @@ sga.precom = 0;                             %вероятность селекц
 
 [bestChromosome, bestFitness,generation] = standardga(sga);
 
+%====== Вывод результата ======
+disp(['Максимальный доход: ', num2str(bestFitness)]);
+disp(' ');
+disp('План заселения по загонам:');
+disp('Корова Курица Баран');
+disp([bestChromosome(1) bestChromosome(2) bestChromosome(3); bestChromosome(4) bestChromosome(5) bestChromosome(6); bestChromosome(7) bestChromosome(8) bestChromosome(9)]);
+%====== /Вывод результата ======

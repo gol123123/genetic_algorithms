@@ -112,7 +112,7 @@ end
 
 
 for i=1:(length(all_fitness))
-m(i) = min(all_fitness{i});
+m(i) = max(all_fitness{i});
 end
 plot(m);
 xlabel("число поколений");
